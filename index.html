@@ -3,67 +3,554 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galeria de Fotos</title>
+  <title>Feliz Aniversário, Giullia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      color: #333;
-    }
-    .galeria {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      width: 100%;
-      max-width: 1200px;
-      margin-top: 20px;
-    }
-    .galeria img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-    }
-    .galeria img:hover {
-      transform: scale(1.05);
-    }
+:root {
+  --bg: #0a0006;
+  --pink: #ff2f92;
+  --pink-deep: #9c0b52;
+  --pink-deeper: #6e0839;
+  --pink-soft: #ffb3d6;
+  --white: #ffffff;
+  --font-script: "Great Vibes", cursive;
+  --font-body: "Quicksand", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ---------- Decoração ambiente (fundo inteiro) ---------- */
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient__item {
+  position: absolute;
+  bottom: -10%;
+  font-size: 1.6rem;
+  opacity: 0;
+  animation-name: float-up;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0) rotate(0deg);        opacity: 0; }
+  10%  { opacity: 0.85; }
+  50%  { transform: translateY(-55vh) rotate(10deg); }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(-8deg); opacity: 0; }
+}
+
+/* ---------- Etapa 1: capa ---------- */
+
+.cover {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  overflow: hidden;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.cover--hide {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+.cover__heart {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 18px var(--pink));
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+.cover__date {
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--pink-soft);
+  font-size: 0.95rem;
+}
+
+.cover__title {
+  margin: 0 0 2.25rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  line-height: 1.3;
+}
+
+.cover__name {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-script);
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  font-weight: 400;
+  color: var(--pink);
+  text-shadow: 0 0 22px rgba(255, 47, 146, 0.55);
+}
+
+.btn-pink {
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 2.4rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: linear-gradient(180deg, var(--pink-deep), var(--pink-deeper));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset, 0 10px 26px rgba(156, 11, 82, 0.55);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-pink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 14px 30px rgba(156, 11, 82, 0.65);
+}
+
+.btn-pink:active {
+  transform: translateY(0);
+}
+
+/* ---------- Estouro de corações ao clicar ---------- */
+
+.burst-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.burst-heart {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  animation-name: burst-fly;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes burst-fly {
+  0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1); opacity: 0; }
+}
+
+/* ---------- Corações-vaga-lume (mesma técnica do seu outro HTML) ---------- */
+
+@keyframes flyFloat {
+  0%   { transform: translate(0,0) scale(1); opacity: 0; }
+  25%  { opacity: 0.85; }
+  50%  { transform: translate(50px,-70px) scale(1.2); opacity: 0.6; }
+  75%  { opacity: 0.4; }
+  100% { transform: translate(90px,-20px) scale(0.8); opacity: 0; }
+}
+
+.firefly-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Lua e névoa (efeito atmosférico da capa) ---------- */
+
+.moon-glow {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,47,146,0.20) 0%, rgba(255,47,146,0.05) 55%, transparent 70%);
+  box-shadow: 0 0 80px 40px rgba(255,47,146,0.08);
+  transform: translateX(-50%);
+  animation: moon-pulse 6s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes moon-pulse {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.07); }
+}
+
+.fog {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- Abas: Mensagem / Fotos ---------- */
+
+.tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  border: 1px solid var(--pink-deep);
+  background: transparent;
+  color: var(--pink-soft);
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tab-btn--active {
+  background: linear-gradient(180deg, var(--pink-deep), var(--pink-deeper));
+  color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 47, 146, 0.45);
+}
+
+.tab-panel {
+  animation: fade-in 0.4s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Etapa 2: mensagem + galeria ---------- */
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.content--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-card {
+  background: #0d0209;
+  color: var(--white);
+  border-radius: 20px;
+  min-height: 10rem;
+  padding: 2rem;
+  border: 1px solid var(--pink);
+  box-shadow: 0 0 24px rgba(255, 47, 146, 0.35), inset 0 0 40px rgba(255, 47, 146, 0.08);
+}
+
+.message-card__text {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  text-shadow: 0 0 10px rgba(255, 47, 146, 0.25);
+}
+
+.gallery__header {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.gallery__title {
+  font-family: var(--font-script);
+  font-size: 2.4rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem;
+  color: var(--pink);
+}
+
+.gallery__note {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--pink-soft);
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.gallery__item {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  aspect-ratio: 4 / 5;
+  background: #2a0f1c;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  animation: bob 5s ease-in-out infinite;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.gallery__item:nth-child(3n+1) { animation-delay: 0s; }
+.gallery__item:nth-child(3n+2) { animation-delay: 1.2s; }
+.gallery__item:nth-child(3n+3) { animation-delay: 2.4s; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.gallery__item:hover,
+.gallery__item:focus-within {
+  animation-play-state: paused;
+  transform: scale(1.12) translateY(-10px);
+  box-shadow: 0 18px 40px rgba(255, 47, 146, 0.45);
+  z-index: 2;
+}
+
+.gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__item { animation: none; }
+}
+
+.gallery__empty {
+  font-size: 0.95rem;
+  color: var(--pink-soft);
+  font-style: italic;
+}
+
   </style>
 </head>
 <body>
 
-  <h1>Minha Galeria</h1>
-
-  <div class="galeria">
-    <img src="foto1.png" alt="Foto 1">
-    <img src="foto2.png" alt="Foto 2">
-    <img src="foto3.png" alt="Foto 3">
-    <img src="foto4.png" alt="Foto 4">
-    <img src="foto5.png" alt="Foto 5">
-    <img src="foto6.png" alt="Foto 6">
-    <img src="foto7.png" alt="Foto 7">
-    <img src="foto8.png" alt="Foto 8">
-    <img src="foto9.png" alt="Foto 9">
-    <img src="foto10.png" alt="Foto 10">
-    <img src="foto11.png" alt="Foto 11">
-    <img src="foto12.png" alt="Foto 12">
-    <img src="foto13.png" alt="Foto 13">
-    <img src="foto14.png" alt="Foto 14">
-    <img src="foto15.png" alt="Foto 15">
-    <img src="foto16.png" alt="Foto 16">
-    <img src="foto17.png" alt="Foto 17">
-    <img src="foto18.png" alt="Foto 18">
-    <img src="foto19.png" alt="Foto 19">
-    <img src="foto20.png" alt="Foto 20">
+  <!-- Decoração ambiente: corações, laços, ursinhos e beijinhos flutuando -->
+  <div class="ambient" aria-hidden="true">
+    <span class="ambient__item" style="left:4%;  animation-duration:14s; animation-delay:0s;">💗</span>
+    <span class="ambient__item" style="left:14%; animation-duration:18s; animation-delay:2s;">🎀</span>
+    <span class="ambient__item" style="left:24%; animation-duration:12s; animation-delay:5s;">🧸</span>
+    <span class="ambient__item" style="left:36%; animation-duration:16s; animation-delay:1s;">💋</span>
+    <span class="ambient__item" style="left:48%; animation-duration:13s; animation-delay:4s;">💗</span>
+    <span class="ambient__item" style="left:60%; animation-duration:19s; animation-delay:3s;">🎀</span>
+    <span class="ambient__item" style="left:70%; animation-duration:15s; animation-delay:6s;">🧸</span>
+    <span class="ambient__item" style="left:80%; animation-duration:11s; animation-delay:2.5s;">💋</span>
+    <span class="ambient__item" style="left:90%; animation-duration:17s; animation-delay:7s;">💗</span>
   </div>
+
+  <!-- ETAPA 1: capa -->
+  <section id="cover" class="cover">
+    <div class="moon-glow" aria-hidden="true"></div>
+    <div class="cover__heart" aria-hidden="true">💖</div>
+    <p class="cover__date">05/11</p>
+    <h1 class="cover__title">Feliz Aniversário,<br><span class="cover__name">Giullia</span></h1>
+    <button id="revealBtn" class="btn-pink" type="button">Clique aqui</button>
+    <div class="fog" aria-hidden="true"></div>
+  </section>
+
+  <!-- Camada onde os corações "explodem" ao clicar -->
+  <div id="burstLayer" class="burst-layer" aria-hidden="true"></div>
+
+  <!-- ETAPA 2: abas de Mensagem e Fotos (some até o clique) -->
+  <section id="content" class="content" hidden>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn tab-btn--active" id="tabBtnMessage" role="tab" aria-selected="true" aria-controls="panelMessage" type="button">Mensagem</button>
+      <button class="tab-btn" id="tabBtnPhotos" role="tab" aria-selected="false" aria-controls="panelPhotos" type="button">Fotos</button>
+    </div>
+
+    <div class="tab-panel tab-panel--active" id="panelMessage" role="tabpanel" aria-labelledby="tabBtnMessage">
+      <div class="message-card">
+        <!--
+          Deixe em branco: o poema vai ser escrito por você.
+          Quando tiver o texto, troque a linha abaixo pelo poema final.
+        -->
+        <p class="message-card__text"></p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panelPhotos" role="tabpanel" aria-labelledby="tabBtnPhotos" hidden>
+      <div class="gallery">
+        <div class="gallery__header">
+          <h2 class="gallery__title">Fotos nossas</h2>
+          <p class="gallery__note">
+            À medida que eu for tirando fotos dela, vou anexando aqui embaixo.
+          </p>
+        </div>
+
+        <div class="gallery__grid" id="galleryGrid">
+          <figure class="gallery__item"><img src="foto1.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto2.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto3.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto4.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto5.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto6.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto7.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto8.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto9.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto10.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto11.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto12.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto13.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto14.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto15.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto16.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto17.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto18.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto19.png" alt="Foto da Giullia"></figure>
+          <figure class="gallery__item"><img src="foto20.png" alt="Foto da Giullia"></figure>
+          <!--
+            Para adicionar mais fotos depois: copie um bloco acima e cole
+            aqui, trocando o número do arquivo (foto21.png, etc).
+          -->
+        </div>
+
+        <p class="gallery__empty" id="galleryEmpty">
+          Ainda sem fotos por aqui — em breve começam a aparecer.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Some com o aviso de "sem fotos" assim que houver ao menos 1 foto na galeria.
+    const grid = document.getElementById('galleryGrid');
+    const empty = document.getElementById('galleryEmpty');
+    if (grid && empty && grid.children.length > 0) {
+      empty.style.display = 'none';
+    }
+
+    // Etapa 1 -> Etapa 2: clique estoura corações e revela o conteúdo.
+    const revealBtn = document.getElementById('revealBtn');
+    const cover = document.getElementById('cover');
+    const content = document.getElementById('content');
+    const burstLayer = document.getElementById('burstLayer');
+
+    const BURST_EMOJIS = ['💗', '💖', '💕', '✨'];
+
+    function spawnHeartBurst(x, y) {
+      const count = 26;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'burst-heart';
+        heart.textContent = BURST_EMOJIS[Math.floor(Math.random() * BURST_EMOJIS.length)];
+
+        const angle = (Math.PI * 2 * i) / count + (Math.random() * 0.4 - 0.2);
+        const distance = 120 + Math.random() * 160;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        heart.style.setProperty('--dx', dx + 'px');
+        heart.style.setProperty('--dy', dy + 'px');
+        heart.style.fontSize = (14 + Math.random() * 18) + 'px';
+        heart.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+
+        burstLayer.appendChild(heart);
+        heart.addEventListener('animationend', () => heart.remove());
+      }
+    }
+
+    revealBtn.addEventListener('click', (e) => {
+      const rect = revealBtn.getBoundingClientRect();
+      spawnHeartBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+      cover.classList.add('cover--hide');
+
+      setTimeout(() => {
+        cover.setAttribute('hidden', '');
+        content.removeAttribute('hidden');
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => content.classList.add('content--visible'));
+      }, 700);
+    });
+
+    // Corações-vaga-lume: mesma técnica do seu outro HTML (anexa direto
+    // no body, position fixed, brilho via box-shadow), só que em rosa.
+    const FIREFLY_COLORS = ['#ff2f92', '#ff6fb0', '#ffb3d6', '#c8a96e'];
+    for (let i = 0; i < 40; i++) {
+      const f = document.createElement('span');
+      f.className = 'firefly-heart';
+      f.textContent = '💗';
+      const size = 8 + Math.random() * 10;
+      const color = FIREFLY_COLORS[i % FIREFLY_COLORS.length];
+      f.style.left = Math.random() * 100 + '%';
+      f.style.top = Math.random() * 100 + '%';
+      f.style.fontSize = size + 'px';
+      f.style.filter = `drop-shadow(0 0 6px ${color})`;
+      f.style.animation = `flyFloat ${5 + Math.random() * 9}s ease-in-out ${Math.random() * 8}s infinite`;
+      document.body.appendChild(f);
+    }
+
+    // Controle das abas "Mensagem" / "Fotos"
+    const tabBtnMessage = document.getElementById('tabBtnMessage');
+    const tabBtnPhotos = document.getElementById('tabBtnPhotos');
+    const panelMessage = document.getElementById('panelMessage');
+    const panelPhotos = document.getElementById('panelPhotos');
+
+    function activateTab(btn, panel, otherBtn, otherPanel) {
+      btn.classList.add('tab-btn--active');
+      btn.setAttribute('aria-selected', 'true');
+      panel.classList.add('tab-panel--active');
+      panel.removeAttribute('hidden');
+
+      otherBtn.classList.remove('tab-btn--active');
+      otherBtn.setAttribute('aria-selected', 'false');
+      otherPanel.classList.remove('tab-panel--active');
+      otherPanel.setAttribute('hidden', '');
+    }
+
+    tabBtnMessage.addEventListener('click', () => {
+      activateTab(tabBtnMessage, panelMessage, tabBtnPhotos, panelPhotos);
+    });
+
+    tabBtnPhotos.addEventListener('click', () => {
+      activateTab(tabBtnPhotos, panelPhotos, tabBtnMessage, panelMessage);
+    });
+  });
+  </script>
 
 </body>
 </html>
