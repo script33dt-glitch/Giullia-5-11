@@ -360,10 +360,61 @@ body {
   font-style: italic;
 }
 
+    /* ---------- Modal / Tela Cheia para Fotos ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox__img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(255, 47, 146, 0.5);
+  object-fit: contain;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.lightbox--open .lightbox__img {
+  transform: scale(1);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+  border: none;
+  line-height: 1;
+}
   </style>
 </head>
 <body>
 
+  <!-- Modal para exibir imagem em tela cheia -->
+<div id="lightbox" class="lightbox" aria-hidden="true">
+  <button id="lightboxClose" class="lightbox__close" type="button">&times;</button>
+  <img id="lightboxImg" class="lightbox__img" src="" alt="Foto expandida">
+</div>
+  
   <!-- Decoração ambiente: corações, laços, ursinhos e beijinhos flutuando -->
   <div class="ambient" aria-hidden="true">
     <span class="ambient__item" style="left:4%;  animation-duration:14s; animation-delay:0s;">💗</span>
@@ -549,6 +600,35 @@ body {
       activateTab(tabBtnPhotos, panelPhotos, tabBtnMessage, panelMessage);
     });
   });
+    // Modal de Tela Cheia para Fotos
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const galleryGrid = document.getElementById('galleryGrid');
+
+    if (galleryGrid) {
+      galleryGrid.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (img) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('lightbox--open');
+        }
+      });
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('lightbox--open');
+    }
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightbox) {
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === lightboxClose) {
+          closeLightbox();
+        }
+      });
+    }
   </script>
 
 </body>
