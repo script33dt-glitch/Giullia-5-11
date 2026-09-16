@@ -491,7 +491,7 @@ body {
         heart.addEventListener('animationend', () => heart.remove());
       }
     }
-
+    
     revealBtn.addEventListener('click', (e) => {
       const rect = revealBtn.getBoundingClientRect();
       spawnHeartBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -499,13 +499,13 @@ body {
       cover.classList.add('cover--hide');
 
       setTimeout(() => {
-        cover.setAttribute('hidden', '');
+        cover.style.display = 'none'; // Esconde a capa completamente para não ocupar espaço na tela
         content.removeAttribute('hidden');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Garante o alinhamento no topo de forma suave
         requestAnimationFrame(() => content.classList.add('content--visible'));
       }, 700);
     });
-
+    
     // Corações-vaga-lume: mesma técnica do seu outro HTML (anexa direto
     // no body, position fixed, brilho via box-shadow), só que em rosa.
     const FIREFLY_COLORS = ['#ff2f92', '#ff6fb0', '#ffb3d6', '#c8a96e'];
