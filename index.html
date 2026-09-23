@@ -630,8 +630,9 @@ body {
       });
     }
   </script>
-  <audio controls loop>
- <source src="matue.mp3" type="audio/mpeg">
+<!-- autoplay e muted permitem que o áudio rode sozinho desde o início -->
+<audio id="meuAudio" autoplay muted loop style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+  <source src="matue.mp3" type="audio/mpeg">
   Seu navegador não suporta o elemento de áudio.
 </audio>
 </body>
